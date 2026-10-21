@@ -1,7 +1,8 @@
-import { LINE_URL, PHONE, hasValue } from "@/lib/site-config";
+import type { Dict } from "@/lib/i18n";
+import { LINE_URL, PHONE, PHONE_TEL, hasValue } from "@/lib/site-config";
 
 /** ปุ่มลอย LINE/โทร — ค่าใน site-config ว่าง = ไม่แสดงปุ่มนั้น */
-export function FloatButtons() {
+export function FloatButtons({ t }: { t: Dict }) {
   const line = hasValue(LINE_URL);
   const phone = hasValue(PHONE);
   if (!line && !phone) return null;
@@ -13,7 +14,7 @@ export function FloatButtons() {
         </a>
       )}
       {phone && (
-        <a className="btn btn-ghost" href={`tel:${PHONE}`} aria-label="โทร">
+        <a className="btn btn-ghost" href={PHONE_TEL} aria-label={t.float.phone}>
           ☎
         </a>
       )}

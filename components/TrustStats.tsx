@@ -3,12 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Bot, Globe, Rocket, ShieldCheck, type LucideIcon } from "lucide-react";
 import { TRUST } from "@/lib/content";
+import type { Dict } from "@/lib/i18n";
 
 const ICONS: Record<string, LucideIcon> = { Globe, ShieldCheck, Rocket, Bot };
 const DURATION = 1200;
 
-/** ตัวเลข Trust + count-up 0→ค่า ตอนเข้าจอ · SSR/ไม่มี JS/reduced-motion = ค่าจริงทันที */
-export function TrustStats() {
+/** ตัวเลข Trust + count-up 0→ค่า ตอนเข้าจอ · SSR/ไม่มี JS/reduced-motion = ค่าจริงทันที · ข้อความจาก t.trust (ลำดับตรง TRUST) */
+export function TrustStats({ t }: { t: Dict }) {
   const ref = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(1);
 
@@ -24,9 +25,9 @@ export function TrustStats() {
       io.disconnect();
       const start = performance.now();
       const tick = (now: number) => {
-        const t = Math.min(1, (now - start) / DURATION);
-        setProgress(1 - Math.pow(1 - t, 3));
-        if (t < 1) raf = requestAnimationFrame(tick);
+        const p = Math.min(1, (now - start) / DURATION);
+        setProgress(1 - Math.pow(1 - p, 3));
+        if (p < 1) raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);
     }, { threshold: 0.4 });
@@ -39,20 +40,21 @@ export function TrustStats() {
 
   return (
     <div className="trust" ref={ref}>
-      {TRUST.map((t) => {
-        const Icon = ICONS[t.icon];
-        const m = t.num.match(/^(\d+)(.*)$/);
-        const shown = m ? `${Math.round(Number(m[1]) * progress)}${m[2]}` : t.num;
+      {TRUST.map((item, i) => {
+        const Icon = ICONS[item.icon];
+        const text = t.trust[i];
+        const m = item.num.match(/^(\d+)(.*)$/);
+        const shown = m ? `${Math.round(Number(m[1]) * progress)}${m[2]}` : item.num;
         return (
-          <div className="card" key={t.label}>
+          <div className="card" key={text.label}>
             <span className="ico-box" aria-hidden="true">
               <Icon size={24} strokeWidth={1.75} />
             </span>
             <span className="num">
               <span className="num-val">{shown}</span>
-              {t.unit && <small>{t.unit}</small>}
+              {text.unit && <small>{text.unit}</small>}
             </span>
-            <span className="lbl">{t.label}</span>
+            <span className="lbl">{text.label}</span>
           </div>
         );
       })}

@@ -1,4 +1,5 @@
 import { PACKAGE_OPTIONS, TEMPLATES } from "@/lib/content";
+import type { Dict } from "@/lib/i18n";
 
 export type InquiryState = { ok: boolean; message: string; fallback?: boolean } | null;
 
@@ -13,7 +14,7 @@ export type Inquiry = {
 
 const str = (form: FormData, key: string) => String(form.get(key) ?? "").trim();
 
-export function validateInquiry(form: FormData): { ok: true; value: Inquiry } | { ok: false; message: string } {
+export function validateInquiry(form: FormData, m: Dict["inquiry"]): { ok: true; value: Inquiry } | { ok: false; message: string } {
   const name = str(form, "name");
   const contact = str(form, "contact");
   const business = str(form, "business");
@@ -21,12 +22,12 @@ export function validateInquiry(form: FormData): { ok: true; value: Inquiry } | 
   const template = str(form, "template");
   const message = str(form, "message");
 
-  if (name.length < 1 || name.length > 60) return { ok: false, message: "กรุณากรอกชื่อ (ไม่เกิน 60 ตัวอักษร)" };
-  if (contact.length < 3 || contact.length > 100) return { ok: false, message: "กรุณากรอกเบอร์โทรหรือ LINE สำหรับติดต่อกลับ" };
-  if (business.length > 100) return { ok: false, message: "ช่องธุรกิจยาวเกินไป (ไม่เกิน 100 ตัวอักษร)" };
-  if (message.length > 2000) return { ok: false, message: "รายละเอียดยาวเกินไป (ไม่เกิน 2,000 ตัวอักษร)" };
-  if (pkg && !(PACKAGE_OPTIONS as readonly string[]).includes(pkg)) return { ok: false, message: "แพ็กเกจไม่ถูกต้อง" };
-  if (template && !TEMPLATES.some((t) => t.code === template)) return { ok: false, message: "รหัสเทมเพลตไม่ถูกต้อง" };
+  if (name.length < 1 || name.length > 60) return { ok: false, message: m.name };
+  if (contact.length < 3 || contact.length > 100) return { ok: false, message: m.contact };
+  if (business.length > 100) return { ok: false, message: m.business };
+  if (message.length > 2000) return { ok: false, message: m.message };
+  if (pkg && !(PACKAGE_OPTIONS as readonly string[]).includes(pkg)) return { ok: false, message: m.package };
+  if (template && !TEMPLATES.some((t) => t.code === template)) return { ok: false, message: m.template };
 
   return {
     ok: true,

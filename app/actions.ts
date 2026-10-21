@@ -2,11 +2,8 @@
 
 import { createHash } from "node:crypto";
 import { headers } from "next/headers";
+import { getDict, isLang } from "@/lib/i18n";
 import { validateInquiry, type InquiryState } from "@/lib/inquiry";
-
-const OK = "ส่งข้อมูลแล้ว เราจะติดต่อกลับภายใน 24 ชม.";
-const FAIL = "ส่งไม่สำเร็จ กรุณาทัก LINE หรือลองใหม่อีกครั้ง";
-const CLOSED = "ระบบรับฟอร์มยังไม่เปิด กรุณาทัก LINE";
 
 async function clientIpHash(): Promise<string> {
   const h = await headers();
@@ -20,10 +17,17 @@ async function clientIpHash(): Promise<string> {
  * ไม่มี env → ไม่ error แจ้งให้ทัก LINE แทน · ใช้ REST ของ Supabase ตรง ๆ (ใบงานไม่อนุญาตเพิ่มแพ็กเกจ supabase-js)
  */
 export async function submitInquiry(_prev: InquiryState, form: FormData): Promise<InquiryState> {
+  // ภาษาของข้อความตอบกลับเท่านั้น (hidden lang) · ไม่บันทึกลงตาราง
+  const lang = String(form.get("lang") ?? "");
+  const m = getDict(isLang(lang) ? lang : "th").inquiry;
+  const OK = m.ok;
+  const FAIL = m.fail;
+  const CLOSED = m.closed;
+
   // กับดักบอท: ช่องซ่อนที่คนจริงไม่เห็น
   if (String(form.get("website") ?? "") !== "") return { ok: true, message: OK };
 
-  const parsed = validateInquiry(form);
+  const parsed = validateInquiry(form, m);
   if (!parsed.ok) return { ok: false, message: parsed.message };
 
   const url = process.env.SUPABASE_URL?.replace(/\/$/, "");
