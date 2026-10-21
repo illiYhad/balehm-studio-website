@@ -1,9 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Building2, House, LayoutDashboard, Trophy, type LucideIcon } from "lucide-react";
 import { ContactSection } from "@/components/ContactSection";
 import { TemplateShot } from "@/components/TemplateShot";
+import { TrustStats } from "@/components/TrustStats";
 import { FAQ, HOME_TEMPLATES, PACKAGES, PORTFOLIO, SERVICES, STEPS, TRUST } from "@/lib/content";
 import { LINE_URL, hasValue } from "@/lib/site-config";
+
+const SERVICE_ICONS: Record<string, LucideIcon> = { Building2, House, Trophy, LayoutDashboard };
 
 export default function Home() {
   const lineHref = hasValue(LINE_URL) ? LINE_URL : "#contact";
@@ -39,20 +43,13 @@ export default function Home() {
             <Image src="/BTS_badge_1024.png" alt="ตรา BTS" width={380} height={380} priority sizes="(max-width: 900px) 200px, 380px" />
           </div>
         </div>
-        <div className="wrap">
-          <div className="trust">
-            {TRUST.map((t) => (
-              <div className="card" key={t.label}>
-                <span className="num">
-                  {t.num}
-                  {t.unit && <small>{t.unit}</small>}
-                </span>
-                <span className="lbl">{t.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </header>
+
+      <section className="trust-band">
+        <div className="wrap">
+          <TrustStats />
+        </div>
+      </section>
 
       <section id="services">
         <div className="wrap">
@@ -63,8 +60,16 @@ export default function Home() {
           </div>
           <div className="grid-4">
             {SERVICES.map((s) => (
-              <div className="card" key={s.title}>
-                <span className="tag">{s.tag}</span>
+              <div className="card svc" key={s.title}>
+                <div className="svc-top">
+                  <span className="ico-box" aria-hidden="true">
+                    {(() => {
+                      const Icon = SERVICE_ICONS[s.icon];
+                      return <Icon size={24} strokeWidth={1.75} />;
+                    })()}
+                  </span>
+                  <span className="tag">{s.tag}</span>
+                </div>
                 <h3>{s.title}</h3>
                 <p>{s.desc}</p>
               </div>
