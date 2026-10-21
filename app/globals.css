@@ -55,6 +55,14 @@ section + section::before { content: ""; position: absolute; top: 0; left: 0; ri
 .menu a { transition: color .2s var(--ease-out-expo) }
 .menu a:hover { color: var(--text-primary) }
 .nav .btn { height: 44px }
+.nav-end { display: flex; align-items: center; gap: var(--space-4) }
+/* TH | EN · ตัวที่ใช้อยู่ขาวหนา อีกตัวสีรอง */
+.lang { display: inline-flex; align-items: center; gap: var(--space-2); font-family: var(--font-en); font-size: 13px; font-weight: 600; letter-spacing: 1px; color: var(--text-secondary) }
+.lang a { color: var(--text-secondary); transition: color .2s var(--ease-out-expo) }
+.lang a:hover { color: var(--text-primary) }
+.lang a[aria-current="true"] { color: var(--text-primary); font-weight: 700 }
+/* หน้า EN: ฟอนต์หลัก Inter · หัวข้อ display เดิม */
+html[lang="en"] body { font-family: var(--font-en) }
 
 /* hero */
 .hero { position: relative; padding: var(--space-24) 0 var(--space-16); background: radial-gradient(60% 50% at 80% 0%, var(--glow-accent), transparent 70%), var(--bg-dominant-950); isolation: isolate }
@@ -166,6 +174,12 @@ section + section::before { content: ""; position: absolute; top: 0; left: 0; ri
 .notice.warn { background: var(--accent-soft); border: 1px solid var(--accent-500) }
 .contact-side { display: flex; flex-direction: column; gap: var(--space-6) }
 .chips { display: flex; gap: var(--space-3); flex-wrap: wrap }
+/* QR LINE: desktop เท่านั้น · มือถือใช้ปุ่มแอด LINE แทน */
+.qr { display: inline-flex; flex-direction: column; align-items: center; gap: var(--space-2); align-self: flex-start }
+.qr img { width: 160px; height: 160px; background: #fff; padding: var(--space-2); border-radius: var(--radius-inner) }
+.qr span { font-size: 14px }
+.qr-mobile { display: none; align-self: flex-start }
+.legal-notice { font-size: 14px }
 .chip { display: inline-flex; align-items: center; gap: var(--space-2); height: 44px; padding: 0 var(--space-4); border-radius: var(--radius-pill); background: var(--bg-card-800); border: 1px solid var(--border-subtle); font-weight: 500 }
 
 footer { border-top: 1px solid var(--border-subtle); padding: var(--space-12) 0; color: var(--text-secondary); font-size: 14px }
@@ -200,6 +214,8 @@ footer .links a:hover { color: var(--text-primary) }
   .trust { grid-template-columns: repeat(2, minmax(0,1fr)) }
   .tpl { grid-template-columns: repeat(2, minmax(0,1fr)) }
   .contact .wrap { grid-template-columns: 1fr; gap: var(--space-8) }
+  .qr { display: none } .qr-mobile { display: inline-flex }
+  .nav-end { gap: var(--space-3) }
   .bonus { grid-template-columns: 1fr }
   .price .amt { font-size: 48px }
   .page-head { padding: var(--space-12) 0 var(--space-8) }
