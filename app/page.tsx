@@ -1,103 +1,203 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ContactSection } from "@/components/ContactSection";
+import { TemplateShot } from "@/components/TemplateShot";
+import { FAQ, HOME_TEMPLATES, PACKAGES, PORTFOLIO, SERVICES, STEPS, TRUST } from "@/lib/content";
+import { LINE_URL, hasValue } from "@/lib/site-config";
 
 export default function Home() {
+  const lineHref = hasValue(LINE_URL) ? LINE_URL : "#contact";
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <>
+      <header className="hero">
+        <div className="wrap hero-grid">
+          <div className="hero-copy">
+            <span className="eyebrow">Web · Systems · AI Agents</span>
+            <h1>
+              เว็บและระบบที่<strong>โค้ดเป็นของคุณ 100%</strong>
+              <br />
+              พร้อมผู้ช่วย AI ประจำธุรกิจ
+            </h1>
+            <p className="muted hero-lead">
+              ไม่ใช่เว็บสำเร็จรูป ไม่ต้องเช่าแพลตฟอร์มรายปี — เราสร้างด้วย Next.js + ฐานข้อมูลจริง + หลังบ้านที่คุณแก้เองได้
+              ส่งมอบพร้อมผู้ช่วย AI ที่เทรนข้อมูลธุรกิจของคุณไว้แล้ว
+            </p>
+            <div className="hero-ctas">
+              <a
+                className="btn btn-primary"
+                href={lineHref}
+                {...(hasValue(LINE_URL) ? { target: "_blank", rel: "noopener" } : {})}
+              >
+                ปรึกษาฟรีทาง LINE
+              </a>
+              <a className="btn btn-ghost" href="#pricing">
+                ดูราคาแพ็กเกจ
+              </a>
+            </div>
+          </div>
+          <div className="hero-badge">
+            <Image src="/BTS_badge_1024.png" alt="ตรา BTS" width={380} height={380} priority sizes="(max-width: 900px) 200px, 380px" />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <div className="wrap">
+          <div className="trust">
+            {TRUST.map((t) => (
+              <div className="card" key={t.label}>
+                <span className="num">
+                  {t.num}
+                  {t.unit && <small>{t.unit}</small>}
+                </span>
+                <span className="lbl">{t.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <section id="services">
+        <div className="wrap">
+          <div className="section-head">
+            <span className="eyebrow">บริการ</span>
+            <h2>เราทำอะไรให้คุณได้บ้าง</h2>
+            <p className="muted">ทุกงานใช้สแต็กเดียวกับที่เราใช้กับลูกค้าจริง: Next.js · Supabase · Vercel</p>
+          </div>
+          <div className="grid-4">
+            {SERVICES.map((s) => (
+              <div className="card" key={s.title}>
+                <span className="tag">{s.tag}</span>
+                <h3>{s.title}</h3>
+                <p>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" className="pricing">
+        <div className="wrap">
+          <div className="section-head">
+            <span className="eyebrow">ราคา</span>
+            <h2>3 แพ็กเกจ ราคาชัด ไม่มีค่าแอบแฝง</h2>
+            <p className="muted">มัดจำ 50% เริ่มงาน · อีก 50% เมื่อส่งมอบ · ปีถัดไป (โดเมน + โฮสต์ + ดูแล) 3,500 บาท</p>
+          </div>
+          <div className="grid-3">
+            {PACKAGES.map((p) => (
+              <div className={`card price-card${p.hot ? " hot" : ""}`} key={p.key}>
+                {p.hot && <span className="ribbon">ยอดนิยม</span>}
+                <h3>{p.title}</h3>
+                <div className="price">
+                  <span className="amt">{p.amount}</span>
+                  <span className="cur">{p.cur}</span>
+                </div>
+                <ul>
+                  {p.items.map((i) => (
+                    <li key={i}>{i}</li>
+                  ))}
+                </ul>
+                <a className={`btn ${p.hot ? "btn-primary" : "btn-ghost"}`} href="#contact">
+                  {p.cta}
+                </a>
+              </div>
+            ))}
+          </div>
+          <div className="bonus">
+            <div className="ico">AI</div>
+            <div>
+              <h3>ทุกแพ็กเกจแถม &quot;ผู้ช่วย AI ประจำธุรกิจคุณ&quot;</h3>
+              <p className="muted">
+                เราตั้งค่า Claude Pro และเทรนข้อมูลธุรกิจของคุณ (สินค้า ราคา คำถามลูกค้า วิธีใช้หลังบ้าน) ให้พร้อมใช้ — ฟรี 3 เดือนแรก
+                หลังจากนั้นต่ออายุเอง ~700 บาท/เดือน
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="work">
+        <div className="wrap">
+          <div className="section-head">
+            <span className="eyebrow">ผลงานจริง</span>
+            <h2>เว็บที่ออนไลน์อยู่ตอนนี้</h2>
+            <p className="muted">กดเข้าไปดูได้ทุกเว็บ — ไม่ใช่ภาพจำลอง</p>
+          </div>
+          <div className="pf">
+            {PORTFOLIO.map((w) => (
+              <a className="card" href={w.url} target="_blank" rel="noopener" key={w.url}>
+                <div className="shot">
+                  <Image src={w.img} alt={w.name} fill sizes="(max-width: 900px) 100vw, 380px" />
+                </div>
+                <div className="meta">
+                  <h3>{w.name}</h3>
+                  <small>{w.meta}</small>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="templates" className="pricing">
+        <div className="wrap">
+          <div className="section-head">
+            <span className="eyebrow">เลือกแบบได้เอง</span>
+            <h2>แคตตาล็อกเทมเพลตให้คุณเลือกก่อนเริ่ม</h2>
+            <p className="muted">เลือกโครงหน้าตาที่ชอบ แล้วเราเขียนใหม่บนสแต็กของเรา — ไม่ใช่ส่งเทมเพลตดิบ</p>
+          </div>
+          <div className="tpl">
+            {HOME_TEMPLATES.map((t) => (
+              <div className="card" key={t.code}>
+                <TemplateShot t={t} sizes="(max-width: 900px) 50vw, 280px" />
+                <div className="meta">
+                  <span>{t.short}</span>
+                  <span className="lic">{t.licenseShort}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: "var(--space-8)" }}>
+            <Link className="btn btn-ghost" href="/templates">
+              ดูเทมเพลตทั้ง 12 แบบ
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="process">
+        <div className="wrap">
+          <div className="section-head">
+            <span className="eyebrow">ขั้นตอน</span>
+            <h2>5 ขั้น จากคุยครั้งแรกถึงเว็บออนไลน์</h2>
+          </div>
+          <div className="steps">
+            {STEPS.map((s, i) => (
+              <div className="card step" key={s.title}>
+                <span className="n">{i + 1}</span>
+                <h3>{s.title}</h3>
+                <p>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" className="pricing">
+        <div className="wrap">
+          <div className="section-head">
+            <span className="eyebrow">คำถามที่พบบ่อย</span>
+            <h2>ก่อนตัดสินใจ</h2>
+          </div>
+          <div className="faq">
+            {FAQ.map((f) => (
+              <div className="card" key={f.q}>
+                <h3>{f.q}</h3>
+                <p>{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <ContactSection />
+    </>
   );
 }
